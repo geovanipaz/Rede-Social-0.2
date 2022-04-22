@@ -38,27 +38,34 @@
                   <div class="card-header" 
                   style="background-image: url({%static 'images/default_card_background.jpg'%});"></div>
                   <div class="card-body text-center">
-                    <img class="card-profile-img" src="{{user.perfil_de_usuario.foto_de_perfil.url}}"
+                    <img class="card-profile-img" src="{{perfil.perfil_de_usuario.foto_de_perfil.url}}"
                      style="width: 100px">
-                    <h3 class="mb-3">{{user.username}}</h3>
-                    <h3 class="mb-3">{{user.perfil_de_usuario.nome_completo}}</h3>
+                    <h3 class="mb-3">{{perfil.username}}</h3>
+                    <h3 class="mb-3">{{perfil.perfil_de_usuario.nome_completo}}</h3>
+                    <div class="row-sm-8">
+                      <h3> Posts &nbsp;&nbsp; 
+                        {{perfil.seguidor.count }} Seguindo &nbsp;&nbsp;
+                        {{perfil.seguindo.count }} Seguidores &nbsp;&nbsp;
+                      </h4>
+                    </div>
+                    
   
-                    {%if not u_form%}
-                      {%if f %}
-                          <form action="" 
+                    {%if not proprio_perfil %}
+                      {%if not ja_seguindo %}
+                          <form action="{% url 'app_login:seguir' username=perfil.username %}" 
                             method="POST" enctype="multipart/form-data">
                             {%csrf_token%}
                             
                             <button  class="btn btn-outline-primary btn-sm">
-                                <span class="fa fa-user"></span> Follow
+                                <span class="fa fa-user"></span> Seguir
                             </button>
                           </form>
                       {% else %}
-                          <form action="" 
+                          <form action="{% url 'app_login:deseguir' username=perfil.username %}" 
                           method="POST">
                             {%csrf_token%}
                               <button  class="btn btn-primary btn-sm">
-                                <span class="fa fa-user"></span> Unfollow
+                                <span class="fa fa-user"></span> Deseguir
                               </button>
                           </form>
                       {%endif%}
@@ -72,7 +79,7 @@
                       
                       <div class="media-body">
                         <h4 class="m-0">Descrição</h4>
-                        <p class="text-muted mb-0">{{user.perfil_de_usuario.descricao}}</p>
+                        <p class="text-muted mb-0">{{perfil.perfil_de_usuario.descricao}}</p>
                         
                       </div>
                     </div>
@@ -173,19 +180,21 @@
           {%endfor%}
 {%endif%}
 
-                  
-                  <div class="card-header">
-                    <div class="input-group">
-                      
-                      <div class="input-group-append">
-                        <form action = "" method="POST" enctype="multipart/form-data">
-                          {%csrf_token%}
-                          {{post_form | crispy}}
-                        <button type="submit" class="btn btn-primary">Post</button>
-                      </form>
-                      </div>
+                {% if proprio_perfil %}
+                <div class="card-header">
+                  <div class="input-group">
+                    
+                    <div class="input-group-append">
+                      <form action = "" method="POST" enctype="multipart/form-data">
+                        {%csrf_token%}
+                        {{post_form | crispy}}
+                      <button type="submit" class="btn btn-primary">Post</button>
+                    </form>
                     </div>
                   </div>
+                </div>
+                
+                {% endif %}
                   
                 </div>
 

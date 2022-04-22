@@ -44,7 +44,8 @@
               <a class="nav-link" href="{% url 'app_login:editarperfil' %}" style="color: #FCF66AFF">Editar Perfil</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="" style="color: #FCF66AFF">Profile</a>
+              <a class="nav-link" href="{% url 'app_login:perfil' username=request.user.username %}"
+               style="color: #FCF66AFF">Perfil</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="" style="color: #FCF66AFF">Feeds</a>
@@ -68,7 +69,7 @@
                   <ul class="navbar-nav ml-auto ml-md-0">
 
                     <li class="nav-item">
-                        <a class="nav-link" href="" style="color: #FCF66AFF">Logout</a>
+                        <a class="nav-link" href="{% url 'app_login:logout' %}" style="color: #FCF66AFF">Logout</a>
                       </li>
 
                 </ul>
