@@ -1,0 +1,40 @@
+{%extends 'base3.html'%}
+{% load crispy_forms_tags %}
+
+{% block body %}
+
+
+{% load static %}
+
+  <style type="text/css">
+    #bg{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+  }
+  </style>
+
+
+  <link href="{%static 'dashboard.css'%}" rel="stylesheet" />
+
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+
+<form class="card" action="" method="post" enctype="multipart/form-data">
+    <div class="card-body p-6">
+    <div class="card-title">Update Profile info</div>
+    {%csrf_token%}
+    
+
+    {{form|crispy}}
+   
+
+    
+      <div class="form-footer">
+        <button name="Update" type="submit" class="btn btn-primary btn-block">Update</button>
+      </div>
+    </div>
+  </form>
+
+{% endblock %}

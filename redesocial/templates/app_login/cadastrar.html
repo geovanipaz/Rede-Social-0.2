@@ -1,0 +1,68 @@
+{% extends "base2.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+
+{% load static %}
+
+  <style type="text/css">
+    #bg{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+  }
+  </style>
+  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+
+
+    <div class="container-fluid" style="padding-top: 110px">
+      <div class="row">
+        
+
+        <div class="col-sm-4">
+          
+        </div>
+
+        <div class="col-sm-3">
+                      
+                <div class="panel panel-default">
+
+                      <div class="panel-heading">
+                        <center><h3 class="panel-title" style="color: #184a45">Cadastre-se Abaixo</h3></center>
+                     </div>
+                      <div class="panel-body">
+                        <form class="card" style="background-color: #184a45" 
+                        method="POST" action="">
+                            {% csrf_token %}
+                            {{form | crispy}}
+                                <input class="btn btn-lg btn-success btn-block" 
+                                type="submit" value="Registrar" 
+                                style="background-color: #fcf66a;color: #184a45">
+                            <br>
+                            <br>
+                            {% for message in messages %}
+                                <center><a class="alert alert-danger" style="color:red;"> {{ message }}</a></center>
+                            {% endfor %}
+                                <br>
+                        </form>
+                    <div class="text-center text-muted">
+                         Já possui uma Conta?  <a href="{% url 'app_login:login' %}">Entrar</a>
+                    </div>
+                    </div>
+
+                     {% if error %}
+                             <p style="color: red; font-weight: bold"> {{ error }} </p>
+                      {% endif %}
+                </div>
+   
+        </div>
+
+        <div class="col-sm-4">
+          
+        </div>
+      </div>
+
+
+    </div>
+  
+{% endblock body %}
