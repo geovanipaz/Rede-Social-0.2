@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.contrib import auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from app_posts.forms import CriarPostForm
 
 # Create your views here.
 
@@ -59,9 +60,21 @@ def logout_usuario(request):
 def perfil(request, username):
     context = {}
     if username == request.user.username:
-        #form_post = CriarPostForm()
+        form_post = CriarPostForm()
+        if request.method == 'POST':
+            form_post = CriarPostForm(request.POST, request.FILES)
+            if form_post.is_valid():
+                post = form_post.save(commit=False)
+                post.autor = request.user
+                post.save()
+                return HttpResponseRedirect(reverse(
+                    'app_login:perfil', kwargs={'username': request.user.username}))
         outro_usuario = User.objects.get(username=username)
-        context = {'proprio_perfil':True, 'perfil':outro_usuario}
+        context = {
+            'proprio_perfil':True,
+            'perfil':outro_usuario,
+            'form_post':form_post,
+        }
     else:
         outro_usuario = User.objects.get(username=username)
         ja_seguindo = Seguir.objects.filter(

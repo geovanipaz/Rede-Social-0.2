@@ -187,7 +187,7 @@
                     <div class="input-group-append">
                       <form action = "" method="POST" enctype="multipart/form-data">
                         {%csrf_token%}
-                        {{post_form | crispy}}
+                        {{ form_post | crispy}}
                       <button type="submit" class="btn btn-primary">Post</button>
                     </form>
                     </div>
@@ -207,7 +207,7 @@
 
 
 
-{%for posts in person.post_set.all%}
+{%for posts in perfil.posts_do_autor.all%}
   <div class="col-sm-11">
             <div class="jumbotron mt-3 bg-white shadow-lg">
             <article class="media content-section shadow"></article>
@@ -215,13 +215,14 @@
 
 
                 <div class="media-heading">
-                  <small class="float-right text-muted">{{posts.created_at}}</small>
+                  <small class="float-right text-muted">{{posts.upload_data}}</small>
                     <h5>{{posts.user.username}}</h5>
                 </div>
 
 
 
-                 <div class="media-object avatar avatar-md mr-4" style="background-image: url({{user.profile.profile_photo.url}})">
+                 <div class="media-object avatar avatar-md mr-4" 
+                 style="background-image: url({{posts.perfil.perfil_de_usuario.foto_do_perfil.url}})">
                    <br>
                  <br>
                  </div>
@@ -229,13 +230,13 @@
                  <br>
 
                  <div class="media-body">
-                            {{posts.post_text}}
+                            {{posts.texto}}
                           </div>
 
                  
 
                  <div>
-                  <img src="{{posts.post_picture.url}}" style="width: 400px; height: 500px">
+                  <img src="{{posts.imagem.url}}" style="width: 400px; height: 500px">
                 </div>
 
 
@@ -256,7 +257,7 @@
                               <div class="media-body">
                                 <div class="col-sm-10">   
                                 <strong>{{user.username}}: </strong>
-                                <form action="{% url 'commentweb' person.username posts.pk%}" method="POST">
+                                <form action="" method="POST">
                                   {%csrf_token%}
                                   {{comment_form|crispy}}
                                       <button type="submit" class="btn btn-primary">Post</button>
