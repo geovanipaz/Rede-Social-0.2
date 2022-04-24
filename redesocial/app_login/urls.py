@@ -13,5 +13,6 @@ urlpatterns = [
     path('logout/',views.logout_usuario, name='logout'),
     path('seguir/<username>/', views.seguir, name='seguir'),
     path('deseguir/<username>/', views.deseguir, name='deseguir'),
+    path('feed/', views.feed, name='feed'),
     
 ]

@@ -1,4 +1,5 @@
 from http.client import HTTPResponse
+from multiprocessing import context
 from pyexpat.errors import messages
 from django.shortcuts import redirect, render, HttpResponseRedirect
 from .forms import CriarPerfilForm, EditarPerfilForm
@@ -9,7 +10,8 @@ from django.urls import reverse
 from django.contrib import auth
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from app_posts.forms import CriarPostForm
+from app_posts.forms import CriarPostForm, CriarComentarioForm
+from app_posts.models import Like, Post
 
 # Create your views here.
 
@@ -121,3 +123,37 @@ def deseguir(request, username):
     ja_seguido.delete()
     return HttpResponseRedirect(reverse('app_login:perfil',
                                         kwargs={'username':username}))
+    
+def feed(request):
+    lista_seguindo = Seguir.objects.filter(seguidor=request.user)
+    posts_lista = Post.objects.filter(autor__in=lista_seguindo.values_list('seguindo'))
+    posts_curtidos = Like.objects.filter(usuario=request.user)
+    lista_posts_curtidos = posts_curtidos.values_list('post',flat=True)
+    context = {
+        'posts_lista':posts_lista,
+        'lista_posts_curtidos': lista_posts_curtidos,
+    }
+    
+    return render(request, 'app_login/feed.html', context)
+
+
+'''
+def feed(request):
+    try:
+        todos_posts = Post.objects.all().order_by('upload_data')
+    except Exception as e:
+        print(e)
+    comentario_form = CriarComentarioForm()
+    username = request.user.username
+    
+    context = {
+        'todos_posts': todos_posts,
+        'comentario_form': comentario_form,
+        'username':username
+    }
+    
+    return render(request,'app_login/feed.html', context)
+'''
+  
+
+    

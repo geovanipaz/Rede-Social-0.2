@@ -1,0 +1,134 @@
+{%extends 'base3.html'%}
+
+{% load crispy_forms_tags %}
+{% block body %}
+
+
+{% load static %}
+
+
+  <style type="text/css">
+    #bg{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100%;
+  }
+  </style>
+
+
+
+    <link href="{%static 'dashboard.css'%}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+
+  <body class="">
+    <div class="page">
+      <div class="page-main" style="padding-top: 70px">
+        {%if messages%}
+{%for message in messages%}
+<div class="alert alert-{{ message.tags }}">
+	{{message}}
+</div>
+{%endfor%}
+{%endif%}
+
+
+
+
+         
+{% for post in posts_lista %}
+
+ 
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3">
+      
+    </div>
+
+
+      <div class="col-sm-6">
+            <div class="jumbotron mt-3 bg-white shadow-lg">
+            <article class="media content-section shadow"></article>
+              <div class="media-body">
+
+
+
+                 <div class="media">
+                        <div class="media-object avatar avatar-md mr-4" style="background-image: url({{posts.user.profile.profile_photo.url}})"></div>
+                        <div class="media-body">
+                          <div class="media-heading">
+                            <small class="float-right text-muted">{{post.upload_data}}</small>
+                            <h5>{{post.autor}}</h5>
+                          </div>
+                          <div class="media-body">
+                            {{post.titulo}}
+                            {{post.pk}}
+                          </div>
+                          <div>
+                            <img src="{{post.imagem.url}}" style="max-width: 500px">
+                            <div>
+                              {% if post.pk in lista_posts_curtidos %}
+                              <a href="{% url 'app_posts:descurtir' pk=post.pk %}">
+                                <i class="bi bi-heart"
+                                style="font-size: 36px;"></i></a>
+                              {% else %}
+                              <a href="{% url 'app_posts:curtir' pk=post.pk %}">
+                                <i class="bi bi-heart-fill"
+                                style="font-size: 36px;"></i></a>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <ul class="media-list">
+                            {%for comment in posts.comment_set.all%}
+                            <li class="media mt-4">
+                              <div class="media-object avatar mr-4" style="background-image: url({{comment.user.profile.profile_photo.url}})"></div>
+                              <div class="media-body">
+                                <strong>{{comment.user.username}}: </strong>
+                                {{comment.comment_text}}
+                              </div>
+                            </li>
+                            {%endfor%}
+                            <li class="media mt-4">                              
+                            </li>
+                            <li class="media mt-4">
+                              <div class="media-object avatar mr-4" 
+                              style="background-image: url({{user.perfil.foto_de_perfil.url}})"></div>
+                              <div class="media-body">
+                                <strong>{{user.username}}: </strong>
+                                <form action="" method="POST">
+                                  {%csrf_token%}
+                                  {{comment_form|crispy}}
+                                      <button type="submit" class="btn btn-primary">Post</button>
+                                </form>
+                                  
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+           
+               
+ 
+          <div class="d-flex justify-content-between">
+          </div>
+        </div>
+      </div>
+  </div>
+
+
+
+
+      <div class="col-sm-3">
+      
+    </div>
+  </div>
+</div>
+
+
+{% endfor %}
+
+
+          
+
+
+{% endblock %}
